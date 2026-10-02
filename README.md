@@ -29,9 +29,23 @@ GitHub contents API, then reads each page's head from the same site. Newest
 `date` first. The list is cached in the browser for 10 minutes; the API allows
 60 unauthenticated requests per hour per visitor IP.
 
-Each analysis page keeps its own visual identity. The index uses the shared
-[gramof design](gramofdesign/README.md) with the `lens` accent defined in
-`lens.css`.
+## Look
+
+The index and every page use the shared [gramof design](gramofdesign/README.md)
+with the silver `lens` accent (`data-accent="lens"` on `<html>`). A new page gets
+the family look by adding to its `<head>`:
+
+```html
+<link rel="stylesheet" href="gramofdesign/gramof.css">
+<link rel="stylesheet" href="common.css">   <!-- fixed theme switch -->
+<script defer src="gramofdesign/theme.js"></script>
+```
+
+plus the no-flash theme snippet and the font link from the gramof README. Copy
+the theme switch markup from an existing page. Colours come from tokens only
+(`--text`, `--line`, `--chart-*`), so charts and maps follow the switch. Icons
+are Tabler from `gramofdesign/icons/`, never emoji. `lens.css` is the index
+layout only.
 
 ## Licence
 
