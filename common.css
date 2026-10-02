@@ -4,6 +4,9 @@
 
 .theme-wrap {
   position: fixed;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
   top: var(--space-5);
   right: var(--space-6);
   z-index: 100;
@@ -14,6 +17,22 @@
   box-shadow: var(--shadow-md), var(--glass-edge);
   backdrop-filter: blur(var(--blur-bar)) saturate(1.4);
   -webkit-backdrop-filter: blur(var(--blur-bar)) saturate(1.4);
+}
+
+/* Support button: same glass as the pill, same height */
+.theme-wrap .kofi-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-pill);
+  background: var(--glass);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-md), var(--glass-edge);
+  backdrop-filter: blur(var(--blur-bar)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--blur-bar)) saturate(1.4);
+}
+.theme-wrap .kofi-btn:hover { color: var(--accent); background: var(--glass-hover); }
+@media (hover: none) and (pointer: coarse) {
+  .theme-wrap .kofi-btn { width: 52px; height: 52px; }
 }
 
 @media (max-width: 640px) {

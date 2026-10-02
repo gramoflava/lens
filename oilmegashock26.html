@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="gramofdesign/gramof.css">
 <link rel="stylesheet" href="common.css">
 <script defer src="gramofdesign/theme.js"></script>
+<script defer src="gramofdesign/kofi.js"></script>
 <style>
 /* Layout: three compact blocks (supply, shipping, price) + chart modal.
    Colours come from gramof design tokens, so the theme switch drives everything. */
@@ -165,6 +166,7 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 </head>
 <body>
 <div class="theme-wrap">
+  <button class="btn btn--quiet btn--icon kofi-btn" type="button" data-kofi aria-label="Support my work" title="Support my work"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 14c.83 .642 2.077 1.017 3.5 1c1.423 .017 2.67 -.358 3.5 -1c.83 -.642 2.077 -1.017 3.5 -1c1.423 -.017 2.67 .358 3.5 1"></path><path d="M8 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2M12 3a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2"></path><path d="M3 10h14v5a6 6 0 0 1 -6 6H9a6 6 0 0 1 -6 -6v-5zM16.746 16.726a3 3 0 1 0 .252 -5.555"></path></svg></button>
   <div class="segmented segmented--icon" role="group" aria-label="Color theme" data-theme-switch>
     <button class="segmented__btn" type="button" data-theme="light" aria-label="Light" title="Light" aria-pressed="false">
       <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M6.343 17.657l-1.414 1.414M6.343 6.343L4.929 4.929M17.657 6.343l1.414 -1.414M17.657 17.657l1.414 1.414M12 20v2M12 2v2M20 12h2M2 12h2"></path></svg>
