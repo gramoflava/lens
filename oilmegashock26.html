@@ -105,10 +105,16 @@ section{display:grid;gap:12px}
 .list{display:grid;gap:6px;font-size:13.5px}
 .li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;padding:6px 9px;border-radius:7px;background:var(--bg)}
 .li b{font-family:var(--mono)}
-.chips{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
-.chip{background:var(--bg);border-radius:8px;padding:8px 10px;display:grid;gap:1px}
-.chip b{font-family:var(--display);font-size:18px;font-weight:600}
-.chip span{font-size:12px;color:var(--muted);line-height:1.3}
+.fc{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:820px){.fc{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.fc{grid-template-columns:1fr}}
+.fcard{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:grid;gap:4px;align-content:start}
+.fcard .fk{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fcard b{font-family:var(--display);font-size:24px;font-weight:600;line-height:1.1}
+.fcard p{font-size:13.5px}
+.fcard small{font-size:12px;color:var(--text-muted);border-left:2px solid var(--line-strong);padding-left:8px}
+.pts{margin:0;padding-left:18px;display:grid;gap:6px;font-size:13.5px}
+.pts b{font-weight:600}
 @media (max-width:700px){.chips{grid-template-columns:repeat(2,minmax(0,1fr))}}
 details{font-size:13px;color:var(--muted)}
 details summary{cursor:pointer;font-family:var(--mono);font-size:12px}
@@ -227,11 +233,40 @@ input[type=range]{width:100%;accent-color:var(--ink)}
       </div>
     </div>
   </div>
-  <div class="chips">
-    <div class="chip"><b>×2.5</b><span>truck transport cost</span></div>
-    <div class="chip"><b>+15%</b><span>food prices (approx.)</span></div>
-    <div class="chip"><b>+40%</b><span>airline fuel cost</span></div>
-    <div class="chip"><b>×2.5</b><span>sea freight for goods</span></div>
+</section>
+
+<section id="s4">
+  <div class="sh"><span class="n" style="color:var(--bad)">4 · outlook</span><h2>What the video expects next</h2></div>
+  <p class="muted">These are the conclusions and forecasts of the video author. Our arithmetic check is in grey.</p>
+  <div class="fc">
+    <div class="fcard"><span class="fk">Trucks</span><b>×3</b><p>Trucks use approx. half of all diesel. If diesel costs 3 times more, truck transport costs 3 times more. Almost all goods travel by truck.</p><small>Check: diesel rose ×2.5, so ×2.5 is closer.</small></div>
+    <div class="fcard"><span class="fk">Food</span><b>+20%</b><p>Transport is approx. 10% of the food price. Farm machines also use diesel. Thus food prices can increase by more than 20%.</p><small>Check: with ×2.5 the transport part gives approx. +15%.</small></div>
+    <div class="fcard"><span class="fk">Housing</span><b>↑</b><p>Materials such as wood cost more to deliver. Construction machines use diesel. Houses become more expensive to build, buy and rent, and there will be fewer of them.</p></div>
+    <div class="fcard"><span class="fk">Flights</span><b>+40%</b><p>Jet fuel has the same shortage. Airline fuel costs increased by 40%. The video expects tickets to cost 40% more, more cancellations and delays, and some airlines to go bankrupt.</p><small>Check: fuel is approx. 25–30% of airline costs, so approx. +10–15% on tickets.</small></div>
+    <div class="fcard"><span class="fk">Trade</span><b>×3</b><p>Ships also use diesel-type fuel. Sea transport of goods costs approx. 3 times more. Exporters, factories that import parts, and countries that import cars or computers will have problems.</p></div>
+    <div class="fcard"><span class="fk">Loop</span><b>↻</b><p>Oil itself travels by ship. Expensive fuel makes oil transport expensive. Thus a high oil price pushes the oil price higher.</p></div>
+  </div>
+  <div class="grid2">
+    <div class="card">
+      <h3>Main conclusions</h3>
+      <ul class="pts">
+        <li>The crisis is not a forecast. It occurs now and is at its start.</li>
+        <li>Diesel affects daily life more than crude oil or gasoline, also for people who never buy diesel.</li>
+        <li>10% less diesel and approx. ×2.5 price occur at the same time. This is the core of the crisis.</li>
+        <li>The longer the crisis continues, the larger and worse it becomes. It is not yet irreversible.</li>
+        <li>Advice: do not accept this as the new normal. Filling the tank in advance probably does not change much.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Signals to monitor</h3>
+      <ul class="pts">
+        <li><b>China.</b> It buys crude at $135 and exports less fuel. The video thinks China expects a worse situation and makes reserves. China gives no reason.</li>
+        <li><b>US diesel export ban.</b> It is under discussion. Economists say it will increase world prices, also US prices.</li>
+        <li><b>Crack spread and tanker rates.</b> Both are at record levels and still increase.</li>
+        <li><b>Small-ship transfers off Oman.</b> 6.5 M barrels per day depend on whether the Iranian navy detects them.</li>
+        <li><b>Fuel shortages.</b> Some US filling stations had no fuel. One truck driver paid $1,000 for one tank. In Russia there are long queues for gasoline.</li>
+      </ul>
+    </div>
   </div>
 </section>
 
