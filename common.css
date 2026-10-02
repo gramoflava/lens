@@ -1,0 +1,26 @@
+/* lens — shared by index.html and every page: accent + theme switch */
+
+/* Accent: silver (cool slate). Lightness matches the family: 500/600 in light, 400 in dark. To make it family-wide, move the three accent lines into the accent block of gramofdesign/gramof.css. */
+:root[data-accent='lens'] { --accent: #64748b; --accent-hover: #475569; }
+@media (prefers-color-scheme: dark) {
+  :root:not(.theme-light):not(.theme-dark)[data-accent='lens'] { --accent: #94a3b8; --accent-hover: #cbd5e1; }
+}
+html.theme-dark[data-accent='lens'] { --accent: #94a3b8; --accent-hover: #cbd5e1; }
+
+.theme-wrap {
+  position: fixed;
+  top: var(--space-5);
+  right: var(--space-6);
+  z-index: 100;
+}
+
+.theme-wrap .segmented {
+  background: var(--glass);
+  box-shadow: var(--shadow-md), var(--glass-edge);
+  backdrop-filter: blur(var(--blur-bar)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--blur-bar)) saturate(1.4);
+}
+
+@media (max-width: 640px) {
+  .theme-wrap { top: var(--space-3); right: var(--space-4); }
+}

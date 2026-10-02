@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-accent="lens">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
 <title>Oil Megashock 2026 · lens</title>
 <meta name="description" content="Three oil shocks at once in 2026: crude, shipping and diesel. Interactive maps and a price chart 2020–2030.">
 <meta name="date" content="2026-10-02">
@@ -13,36 +14,37 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Golos+Text:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Outfit:wght@400;500;600;700&amp;display=swap">
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('theme'); } catch (e) { }
+    if (t === 'light') document.documentElement.classList.add('theme-light');
+    else if (t === 'dark') document.documentElement.classList.add('theme-dark');
+  })();
+</script>
+<link rel="stylesheet" href="gramofdesign/gramof.css">
+<link rel="stylesheet" href="common.css">
+<script defer src="gramofdesign/theme.js"></script>
 <style>
-/* Layout: nautical-chart paper; three compact blocks (supply, shipping, price) + chart modal */
+/* Layout: three compact blocks (supply, shipping, price) + chart modal.
+   Colours come from gramof design tokens, so the theme switch drives everything. */
 :root{
-  --bg:#EBF0EF; --surface:#F7FAF9; --ink:#13212A; --muted:#58686F; --line:#C8D2D2;
-  --sea:#D3E1E5; --land:#E7E0CF; --coast:#B8AE96;
-  --crude:#C2740E; --ship:#1C7A80; --refine:#A13A72; --bad:#CC3626; --good:#3B8752;
-  --display:"Unbounded","Arial Black",system-ui,sans-serif;
-  --body:"Golos Text",system-ui,-apple-system,"Segoe UI",sans-serif;
-  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  --ink:var(--text); --muted:var(--text-secondary);
+  --crude:var(--chart-2); --ship:var(--chart-4); --refine:var(--chart-3); --bad:var(--chart-5); --good:var(--chart-6);
+  --sea:color-mix(in srgb,var(--chart-1) 10%,var(--bg));
+  --land:color-mix(in srgb,var(--palette-sand) 22%,var(--surface));
+  --coast:color-mix(in srgb,var(--palette-sand) 55%,var(--surface));
+  --display:var(--font-display); --body:var(--font-sans); --mono:var(--font-mono);
 }
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0C1317; --surface:#131D22; --ink:#E2EAEC; --muted:#8FA0A7; --line:#27363C;
-  --sea:#0F222A; --land:#232D2A; --coast:#3B4842;
-  --crude:#F0A33B; --ship:#3BB5BA; --refine:#E07BB0; --bad:#F2604F; --good:#5DBB7A; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0C1317; --surface:#131D22; --ink:#E2EAEC; --muted:#8FA0A7; --line:#27363C;
-  --sea:#0F222A; --land:#232D2A; --coast:#3B4842;
-  --crude:#F0A33B; --ship:#3BB5BA; --refine:#E07BB0; --bad:#F2604F; --good:#5DBB7A; color-scheme:dark}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5}
-.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:22px 48px;display:grid;gap:28px}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:64px 48px;display:grid;gap:28px}
 h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance;letter-spacing:-.01em}
-h1{font-size:clamp(26px,5vw,44px);font-weight:800;line-height:1.05}
+h1{font-size:clamp(30px,5.5vw,52px);font-weight:600;letter-spacing:-.04em;line-height:1.05}
 h2{font-size:clamp(17px,2.4vw,22px);font-weight:600;line-height:1.2}
-h3{font-size:14px;font-weight:600}
+h3{font-size:15px;font-weight:600}
 p{margin:0}
 .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
 .muted{color:var(--muted)}
-.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 .t-crude{color:var(--crude)}.t-ship{color:var(--ship)}.t-refine{color:var(--refine)}.t-bad{color:var(--bad)}.t-good{color:var(--good)}
 header{display:grid;gap:12px}
 .kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
@@ -53,10 +55,7 @@ header{display:grid;gap:12px}
 section{display:grid;gap:12px}
 .sh{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
 .sh .n{font-family:var(--mono);font-size:12px;color:var(--c);border:1px solid currentColor;border-radius:99px;padding:1px 8px}
-.btn{all:unset;cursor:pointer;font-family:var(--mono);font-size:13px;padding:7px 13px;border-radius:99px;border:1px solid var(--ink);display:inline-flex;gap:8px;align-items:center}
-.btn.primary{background:var(--ink);color:var(--bg)}
-.btn:hover{opacity:.85}
-.btn:focus-visible,.step:focus-visible,.x:focus-visible{outline:2px solid var(--ship);outline-offset:2px}
+.step:focus-visible,.x:focus-visible{outline:none;box-shadow:0 0 0 3px var(--accent-ring)}
 .ctrl{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 
 .grid2{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:14px;align-items:start}
@@ -82,7 +81,7 @@ section{display:grid;gap:12px}
 .stepper{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:5px}
 .step{all:unset;cursor:pointer;display:grid;gap:1px;padding:6px 8px;border-radius:7px;border:1px solid var(--line);background:var(--surface);font-size:12px;line-height:1.25}
 .step .d{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
-.step[aria-current="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.step[aria-current="true"]{background:var(--accent);color:var(--text-on-accent);border-color:var(--accent)}
 .step[aria-current="true"] .d{color:inherit;opacity:.7}
 @media (max-width:640px){.stepper{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .net{display:flex;align-items:baseline;gap:8px}
@@ -115,7 +114,7 @@ details{font-size:13px;color:var(--muted)}
 details summary{cursor:pointer;font-family:var(--mono);font-size:12px}
 details ul{margin:8px 0 0;padding-left:18px;display:grid;gap:4px}
 footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;display:grid;gap:8px}
-.fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:5;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:5;box-shadow:var(--shadow-lg)}
 
 /* modal */
 dialog#chartDlg{width:min(1120px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);overflow:hidden}
@@ -157,6 +156,17 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 </style>
 </head>
 <body>
+<div class="theme-wrap">
+  <div class="segmented segmented--icon" role="group" aria-label="Color theme" data-theme-switch>
+    <button class="segmented__btn" type="button" data-theme="light" aria-label="Light" title="Light" aria-pressed="false">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M6.343 17.657l-1.414 1.414M6.343 6.343L4.929 4.929M17.657 6.343l1.414 -1.414M17.657 17.657l1.414 1.414M12 20v2M12 2v2M20 12h2M2 12h2"></path></svg>
+    </button>
+    <button class="segmented__btn" type="button" data-theme="auto" aria-label="Auto" title="Auto" aria-pressed="false"><span>A</span></button>
+    <button class="segmented__btn" type="button" data-theme="dark" aria-label="Dark" title="Dark" aria-pressed="false">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3h.393a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 2.992z"></path></svg>
+    </button>
+  </div>
+</div>
 <div class="wrap">
 <header>
   <span class="eyebrow"><a href="./" style="color:inherit">lens</a> · Based on <a href="https://www.youtube.com/watch?v=OETnuwwsv9U" target="_blank" rel="noopener" style="color:inherit">this video</a> · late September 2026</span>
@@ -168,7 +178,7 @@ input[type=range]{width:100%;accent-color:var(--ink)}
     <div class="kpi"><b class="t-ship">$3 → $26</b><span>shipping cost per barrel</span></div>
     <div class="kpi"><b class="t-refine">$85 → $210</b><span>price of one barrel of diesel</span></div>
   </div>
-  <div class="ctrl"><button class="btn primary" type="button" data-open-chart>📈 Price chart 2020–2030</button></div>
+  <div class="ctrl"><button class="btn btn--primary" type="button" data-open-chart>📈 Price chart 2020–2030</button></div>
 </header>
 
 <section id="s1">
@@ -235,7 +245,7 @@ input[type=range]{width:100%;accent-color:var(--ink)}
 </footer>
 </div>
 
-<button class="btn primary fab" type="button" data-open-chart>📈 Chart</button>
+<button class="btn btn--primary fab" type="button" data-open-chart>📈 Chart</button>
 
 <dialog id="chartDlg" aria-labelledby="dlgTitle">
   <div class="dlg">
