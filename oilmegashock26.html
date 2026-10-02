@@ -120,9 +120,6 @@ details{font-size:13px;color:var(--muted)}
 details summary{cursor:pointer;font-family:var(--mono);font-size:12px}
 details ul{margin:8px 0 0;padding-left:18px;display:grid;gap:4px}
 footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:12px;display:grid;gap:8px}
-.fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:5;box-shadow:var(--shadow-lg);transition:opacity var(--dur-base,160ms),transform var(--dur-base,160ms)}
-.fab.is-hidden{opacity:0;transform:translateY(8px);pointer-events:none}
-@media (max-width:560px){.fab{width:44px;height:44px;padding:0;justify-content:center;border-radius:50%}.fab .fab-t{display:none}}
 .lbl.edge-l{transform:translate(0,-50%)}
 
 .now{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
@@ -196,8 +193,7 @@ details.acc ul{padding-left:18px}
     <div class="kpi"><b class="t-ship">$3 → $26</b><span>shipping cost per barrel</span></div>
     <div class="kpi"><b class="t-refine">$85 → $210</b><span>price of one barrel of diesel</span></div>
   </div>
-  <div class="ctrl"><button class="btn btn--primary" type="button" data-go="forecast" id="chartBtn"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M4 15l4 -6l4 2l4 -5l4 4"/></svg>Forecast 2020–2030</button></div>
-</header>
+  </header>
 
 <div class="segmented tabs" role="tablist" aria-label="Page sections">
   <button class="segmented__btn" type="button" role="tab" id="tabBtn-video" aria-controls="tab-video" data-tab="video" aria-pressed="true" aria-selected="true">The video</button>
@@ -348,7 +344,6 @@ details.acc ul{padding-left:18px}
 </div>
 </div>
 
-<button class="btn btn--primary fab" type="button" data-go="forecast" aria-label="Forecast 2020–2030" title="Forecast 2020–2030"><svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M4 15l4 -6l4 2l4 -5l4 4"/></svg><span class="fab-t">Forecast</span></button>
 
 
 <script>
@@ -619,17 +614,12 @@ function update(){scn=sim(sc);base=sim(Object.assign({},PRESETS.stalemate,{S:sc.
 
 /* tabs */
 const panels={video:document.getElementById('tab-video'),forecast:document.getElementById('tab-forecast')};
-const fab=document.querySelector('.fab'),chartBtn=document.getElementById('chartBtn');
-let tab='video',btnVisible=true;
-function syncFab(){if(fab)fab.classList.toggle('is-hidden',tab==='forecast'||btnVisible)}
+let tab='video';
 function show(t,scroll){tab=t;for(const k in panels)panels[k].hidden=k!==t;
   document.querySelectorAll('[data-tab]').forEach(b=>{const on=b.dataset.tab===t;b.setAttribute('aria-pressed',on);b.setAttribute('aria-selected',on)});
   try{history.replaceState(null,'',t==='forecast'?'#forecast':location.pathname+location.search)}catch(e){}
-  if(t==='forecast'){update();if(scroll)document.querySelector('.tabs').scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}
-  syncFab()}
+  if(t==='forecast'){update();if(scroll)document.querySelector('.tabs').scrollIntoView({block:'start',behavior:reduce?'auto':'smooth'})}}
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>show(b.dataset.tab));
-document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>show(b.dataset.go,true));
-if(fab&&chartBtn&&'IntersectionObserver'in window){new IntersectionObserver(e=>{btnVisible=e[0].isIntersecting;syncFab()}).observe(chartBtn)}else btnVisible=false;
 if('ResizeObserver' in window)new ResizeObserver(()=>{if(tab==='forecast')draw()}).observe(charts);
 show(location.hash==='#forecast'?'forecast':'video');
 })();
