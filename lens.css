@@ -38,6 +38,9 @@ main { flex: 1; padding-bottom: var(--space-12); }
 
 .entries { list-style: none; display: grid; gap: var(--space-3); }
 
+.state { color: var(--text-muted); padding-block: var(--space-4); }
+.state a { color: var(--accent); }
+
 .entry {
   display: grid;
   gap: var(--space-1);

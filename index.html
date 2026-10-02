@@ -62,24 +62,105 @@
 
   <main class="container">
     <!--
-      Add a new page: put the .html file in the repo root,
-      then copy one <li> below and put it at the top (newest first).
+      The list builds itself: every *.html in the repo root except index.html.
+      Each page supplies its own card through <head>:
+        <title>Name · lens</title>
+        <meta name="description" content="…">
+        <meta name="date" content="YYYY-MM-DD">
+        <meta name="keywords" content="tag, tag">
     -->
-    <ol class="entries">
-      <li>
-        <a class="entry solid" href="oilmegashock26.html">
-          <span class="entry__meta">
-            <time datetime="2026-10-02">2 Oct 2026</time>
-            <span class="tag">energy</span>
-            <span class="tag">economics</span>
-          </span>
-          <span class="entry__title">Oil Megashock 2026</span>
-          <span class="entry__desc">Three shocks at once: less crude, fewer tankers, less diesel. Where the oil goes, what is closed, and how $100 crude becomes $210 diesel.</span>
-          <span class="entry__src">Based on a video · interactive price chart 2020–2030</span>
-        </a>
-      </li>
+    <ol class="entries" id="entries" aria-live="polite">
+      <li class="state"><span class="tag">loading…</span></li>
     </ol>
   </main>
+
+  <script>
+    (function () {
+      var REPO = 'gramoflava/lens', BRANCH = 'main', CACHE = 'lens:pages:v1', TTL = 10 * 60 * 1000;
+      var list = document.getElementById('entries');
+
+      function esc(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+      function meta(doc, name) {
+        var m = doc.querySelector('meta[name="' + name + '"]');
+        return m ? m.getAttribute('content').trim() : '';
+      }
+      function fmtDate(iso) {
+        var d = new Date(iso + 'T12:00:00');
+        return isNaN(d) ? '' : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+
+      function readCache() {
+        try {
+          var c = JSON.parse(sessionStorage.getItem(CACHE));
+          return c && Date.now() - c.t < TTL ? c.pages : null;
+        } catch (e) { return null; }
+      }
+      function writeCache(pages) {
+        try { sessionStorage.setItem(CACHE, JSON.stringify({ t: Date.now(), pages: pages })); } catch (e) { }
+      }
+
+      function listFiles() {
+        return fetch('https://api.github.com/repos/' + REPO + '/contents/?ref=' + BRANCH, {
+          headers: { Accept: 'application/vnd.github+json' }
+        }).then(function (r) {
+          if (!r.ok) throw new Error('GitHub API ' + r.status);
+          return r.json();
+        }).then(function (items) {
+          return items
+            .filter(function (it) { return it.type === 'file' && /\.html$/i.test(it.name) && it.name !== 'index.html'; })
+            .map(function (it) { return it.name; });
+        });
+      }
+
+      function readPage(file) {
+        return fetch(file, { cache: 'no-cache' })
+          .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+          .then(function (html) {
+            var doc = new DOMParser().parseFromString(html, 'text/html');
+            var title = (doc.title || file).replace(/\s*·\s*lens\s*$/i, '');
+            return {
+              file: file,
+              title: title,
+              desc: meta(doc, 'description'),
+              date: meta(doc, 'date'),
+              tags: meta(doc, 'keywords').split(',').map(function (s) { return s.trim(); }).filter(Boolean)
+            };
+          })
+          .catch(function () { return { file: file, title: file.replace(/\.html$/i, ''), desc: '', date: '', tags: [] }; });
+      }
+
+      function render(pages) {
+        if (!pages.length) {
+          list.innerHTML = '<li class="state"><span class="tag">no pages yet</span></li>';
+          return;
+        }
+        pages.sort(function (a, b) { return (b.date || '').localeCompare(a.date || '') || a.title.localeCompare(b.title); });
+        list.innerHTML = pages.map(function (p) {
+          var date = p.date ? '<time datetime="' + esc(p.date) + '">' + esc(fmtDate(p.date)) + '</time>' : '';
+          var tags = p.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('');
+          return '<li><a class="entry solid" href="' + esc(p.file) + '">' +
+            '<span class="entry__meta">' + date + tags + '</span>' +
+            '<span class="entry__title">' + esc(p.title) + '</span>' +
+            (p.desc ? '<span class="entry__desc">' + esc(p.desc) + '</span>' : '') +
+            '</a></li>';
+        }).join('');
+      }
+
+      function fail() {
+        list.innerHTML = '<li class="state">The list did not load. ' +
+          '<a href="https://github.com/' + REPO + '">See all pages on GitHub</a>.</li>';
+      }
+
+      var cached = readCache();
+      if (cached) { render(cached); return; }
+      listFiles()
+        .then(function (files) { return Promise.all(files.map(readPage)); })
+        .then(function (pages) { writeCache(pages); render(pages); })
+        .catch(fail);
+    })();
+  </script>
 
   <footer class="site-footer">
     <div class="container">

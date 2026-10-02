@@ -6,21 +6,28 @@ arithmetic check.
 Live at [lens.gramoflava.xyz](https://lens.gramoflava.xyz). Static HTML on
 GitHub Pages, no build step, no backend.
 
-## Pages
-
-| Page | Topic | Source |
-|---|---|---|
-| [oilmegashock26.html](https://lens.gramoflava.xyz/oilmegashock26.html) | Oil Megashock 2026: crude, shipping, diesel | [video](https://www.youtube.com/watch?v=OETnuwwsv9U) |
-
 ## Add a page
 
 1. Put a self-contained `name.html` in the repo root. Short lowercase name,
    topic plus two-digit year, e.g. `oilmegashock26.html`.
-2. Give it a full document (`<!doctype html>`, `<meta charset="utf-8">`,
-   viewport, `<title>`), inline CSS and JS, and a link back to `./`.
+2. Give it a full document with inline CSS and JS, a link back to `./`, and
+   these head tags — the index reads its card from them:
+
+   ```html
+   <meta charset="utf-8">
+   <title>Page name · lens</title>
+   <meta name="description" content="One or two sentences.">
+   <meta name="date" content="2026-10-02">
+   <meta name="keywords" content="energy, economics">
+   ```
+
 3. Name the source on the page.
-4. Add an entry at the top of the list in `index.html` and a row in the table
-   above.
+4. Commit and push. No index edit is needed.
+
+`index.html` lists every `*.html` in the repo root (except itself) through the
+GitHub contents API, then reads each page's head from the same site. Newest
+`date` first. The list is cached in the browser for 10 minutes; the API allows
+60 unauthenticated requests per hour per visitor IP.
 
 Each analysis page keeps its own visual identity. The index uses the shared
 [gramof design](gramofdesign/README.md) with the `lens` accent defined in
