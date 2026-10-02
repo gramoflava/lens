@@ -117,11 +117,11 @@ footer{font-size:12px;color:var(--muted);border-top:1px solid var(--line);paddin
 .fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:5;box-shadow:var(--shadow-lg)}
 
 /* modal */
-dialog#chartDlg{width:min(1120px,calc(100vw - 24px));max-height:calc(100dvh - 24px);padding:0;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);overflow:hidden}
+dialog#chartDlg{position:fixed;inset:0;width:100vw;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;border-radius:0;box-shadow:none;background:var(--surface);color:var(--ink);overflow:hidden}
 dialog#chartDlg::backdrop{background:rgba(6,12,16,.55)}
-.dlg{display:grid;grid-template-rows:auto minmax(0,1fr);max-height:calc(100dvh - 26px)}
-.dlg-head{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line)}
-.dlg-body{overflow:auto;padding:12px 16px 16px;display:grid;gap:12px}
+.dlg{display:grid;grid-template-rows:auto minmax(0,1fr);height:100%;max-width:1600px;margin:0 auto}
+.dlg-head{display:flex;gap:12px;align-items:flex-start;justify-content:space-between;padding:calc(12px + env(safe-area-inset-top,0px)) 20px 12px;border-bottom:1px solid var(--line)}
+.dlg-body{overflow:auto;padding:14px 20px calc(16px + env(safe-area-inset-bottom,0px));display:grid;gap:14px;align-content:start}
 .x{all:unset;cursor:pointer;width:32px;height:32px;border-radius:50%;display:grid;place-items:center;border:1px solid var(--line);font-size:16px;flex:none}
 .now{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .nowc{background:var(--bg);border-radius:8px;padding:8px 10px;display:grid;gap:1px;border-top:3px solid var(--c)}
@@ -130,7 +130,7 @@ dialog#chartDlg::backdrop{background:rgba(6,12,16,.55)}
 .nowc small{font-size:11px;color:var(--muted);font-family:var(--mono)}
 @media (max-width:600px){.now{grid-template-columns:1fr}}
 .stale{font-size:13px;padding:7px 10px;border-radius:8px;background:color-mix(in oklab,var(--crude) 14%,var(--surface))}
-.cg{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:14px;align-items:start}
+.cg{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:20px;align-items:start}
 @media (max-width:880px){.cg{grid-template-columns:1fr}}
 .charts{position:relative;min-width:0}
 .charts svg{display:block;width:100%;touch-action:pan-y}
@@ -413,7 +413,7 @@ const stale=(today-new Date(2026,8,30))/(864e5*30.44);
 function val(s,x){if(x<=AS_OF){const a=Math.floor(x),b=Math.ceil(x);if(s.h[a]!=null&&s.h[b]!=null)return{v:s.h[a]+(s.h[b]-s.h[a])*(x-a),k:'data'};let i=a;while(s.h[i]==null)i--;let j=b;while(s.h[j]==null)j++;return{v:s.h[i]+(s.h[j]-s.h[i])*(x-i)/(j-i),k:'no data'}}
   const a=Math.floor(x),va=model(s.k,Math.max(a,AS_OF),1),vb=model(s.k,a+1,1);return{v:va+(vb-va)*(x-a),k:'forecast'}}
 const charts=document.getElementById('charts'),tip=document.getElementById('tip');let svgC;
-function draw(){if(svgC)svgC.remove();const Wd=Math.max(300,charts.clientWidth),nar=Wd<540,L=nar?40:50,Rm=10,PH=nar?120:140,GP=32,TOP=34,H=TOP+3*(PH+GP)+6;
+function draw(){if(svgC)svgC.remove();const Wd=Math.max(300,charts.clientWidth),nar=Wd<540,L=nar?40:50,Rm=10,PH=nar?120:Math.max(130,Math.min(240,Math.round((innerHeight-330)/3-32))),GP=32,TOP=34,H=TOP+3*(PH+GP)+6;
   svgC=el('svg',{viewBox:`0 0 ${Wd} ${H}`,height:H,role:'img','aria-label':'Price chart 2020 to 2030'});charts.insertBefore(svgC,tip);
   const xs=i=>L+i/END*(Wd-L-Rm);
   el('rect',{x:xs(AS_OF),y:TOP-6,width:xs(END)-xs(AS_OF),height:H-TOP,fill:'var(--ink)',opacity:.04},svgC);
