@@ -1,0 +1,66 @@
+/* lens — index layout on top of gramof design */
+
+/* Accent. Move these lines into gramofdesign/gramof.css (accent block) when lens joins the family list. */
+:root[data-accent='lens'] { --accent: #be185d; --accent-hover: #9d174d; }
+@media (prefers-color-scheme: dark) {
+  :root:not(.theme-light):not(.theme-dark)[data-accent='lens'] { --accent: #f472b6; --accent-hover: #f9a8d4; }
+}
+html.theme-dark[data-accent='lens'] { --accent: #f472b6; --accent-hover: #f9a8d4; }
+
+body { min-height: 100dvh; display: flex; flex-direction: column; }
+
+.container {
+  width: 100%;
+  max-width: var(--content-narrow);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+.theme-wrap {
+  position: fixed;
+  top: var(--space-5);
+  right: var(--space-6);
+  z-index: 100;
+}
+.theme-wrap .segmented {
+  background: var(--glass);
+  box-shadow: var(--shadow-md), var(--glass-edge);
+  backdrop-filter: blur(var(--blur-bar)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--blur-bar)) saturate(1.4);
+}
+
+.hero { padding-block: 80px var(--space-8); }
+.hero .container { display: flex; flex-direction: column; gap: var(--space-3); align-items: flex-start; }
+.hero h1 { font-size: var(--text-3xl); text-wrap: balance; }
+.lede { color: var(--text-muted); font-size: var(--text-lg); max-width: 60ch; }
+
+main { flex: 1; padding-bottom: var(--space-12); }
+
+.entries { list-style: none; display: grid; gap: var(--space-3); }
+
+.entry {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-4) var(--space-5);
+  color: inherit;
+  text-decoration: none;
+  transition: border-color var(--dur-fast) ease, transform var(--dur-fast) ease;
+}
+.entry:hover { border-color: var(--accent); }
+.entry:focus-visible { outline: none; box-shadow: 0 0 0 3px var(--accent-ring); }
+.entry__meta { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); }
+.entry__title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 600; letter-spacing: -0.02em; }
+.entry:hover .entry__title { color: var(--accent); }
+.entry__desc { color: var(--text-muted); max-width: 70ch; }
+.entry__src { font-size: var(--text-sm); color: var(--text-muted); }
+
+.site-footer { border-top: 1px solid var(--line); padding-block: var(--space-6); font-size: var(--text-sm); color: var(--text-muted); }
+.site-footer .container { display: flex; gap: var(--space-2); }
+.site-footer a { color: inherit; }
+.site-footer a:hover { color: var(--accent); }
+
+@media (max-width: 560px) {
+  .hero { padding-top: 72px; }
+  .hero h1 { font-size: var(--text-2xl); }
+  .container { padding-inline: var(--space-4); }
+}

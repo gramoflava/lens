@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" data-accent="lens">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Interactive one-page breakdowns of complex topics">
+  <meta property="og:title" content="lens · gramoflava">
+  <meta property="og:description" content="Interactive one-page breakdowns of complex topics">
+  <meta property="og:url" content="https://lens.gramoflava.xyz">
+  <title>lens.gramoflava.xyz</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <script>
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('theme'); } catch (e) { }
+      if (t === 'light') document.documentElement.classList.add('theme-light');
+      else if (t === 'dark') document.documentElement.classList.add('theme-dark');
+    })();
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Outfit:wght@400;500;600&amp;display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="gramofdesign/gramof.css">
+  <link rel="stylesheet" href="lens.css">
+  <script defer src="gramofdesign/theme.js"></script>
+</head>
+
+<body>
+
+  <div class="theme-wrap">
+    <div class="segmented segmented--icon" role="group" aria-label="Color theme" data-theme-switch>
+      <button class="segmented__btn" type="button" data-theme="light" aria-label="Light" title="Light" aria-pressed="false">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M6.343 17.657l-1.414 1.414M6.343 6.343L4.929 4.929M17.657 6.343l1.414 -1.414M17.657 17.657l1.414 1.414M12 20v2M12 2v2M20 12h2M2 12h2"></path>
+        </svg>
+      </button>
+      <button class="segmented__btn" type="button" data-theme="auto" aria-label="Auto" title="Auto" aria-pressed="false">
+        <span>A</span>
+      </button>
+      <button class="segmented__btn" type="button" data-theme="dark" aria-label="Dark" title="Dark" aria-pressed="false">
+        <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3h.393a7.5 7.5 0 0 0 7.92 12.446A9 9 0 1 1 12 2.992z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="container">
+      <span class="tag">lens</span>
+      <h1>A closer look at complex things</h1>
+      <p class="lede">One topic per page. Interactive maps, charts and numbers, with sources and a check of the arithmetic.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <!--
+      Add a new page: put the .html file in the repo root,
+      then copy one <li> below and put it at the top (newest first).
+    -->
+    <ol class="entries">
+      <li>
+        <a class="entry solid" href="oilmegashock26.html">
+          <span class="entry__meta">
+            <time datetime="2026-10-02">2 Oct 2026</time>
+            <span class="tag">energy</span>
+            <span class="tag">economics</span>
+          </span>
+          <span class="entry__title">Oil Megashock 2026</span>
+          <span class="entry__desc">Three shocks at once: less crude, fewer tankers, less diesel. Where the oil goes, what is closed, and how $100 crude becomes $210 diesel.</span>
+          <span class="entry__src">Based on a video · interactive price chart 2020–2030</span>
+        </a>
+      </li>
+    </ol>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <a href="https://whois.gramoflava.xyz">gramoflava</a>
+      <span>·</span>
+      <a href="https://github.com/gramoflava/lens">source</a>
+    </div>
+  </footer>
+
+</body>
+
+</html>
