@@ -37,12 +37,13 @@ the family look by adding to its `<head>`:
 
 ```html
 <link rel="stylesheet" href="gramofdesign/gramof.css">
-<link rel="stylesheet" href="common.css">   <!-- fixed theme switch -->
+<script defer src="gramofdesign/tools.js"></script>
 <script defer src="gramofdesign/theme.js"></script>
 ```
 
-plus the no-flash theme snippet and the font link from the gramof README. Copy
-the theme switch markup from an existing page. Colours come from tokens only
+plus the no-flash theme snippet and the font link from the gramof README, and
+one empty element for the top-right tools (theme · Ko-fi · whois):
+`<div class="site-tools site-tools--glass site-tools--float" data-site-tools></div>`. Colours come from tokens only
 (`--text`, `--line`, `--chart-*`), so charts and maps follow the switch. Icons
 are Tabler from `gramofdesign/icons/`, never emoji. `lens.css` is the index
 layout only.

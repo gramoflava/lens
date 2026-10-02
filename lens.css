@@ -1,5 +1,5 @@
 /* lens — index layout on top of gramof design (layout borrowed from whois).
-   Accent and theme switch live in common.css. */
+   Accent and site tools come from gramofdesign. */
 
 body {
   min-height: 100dvh;
