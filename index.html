@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="color-scheme" content="light dark">
-  <meta name="description" content="Interactive one-page breakdowns of complex topics">
+  <meta name="description" content="A closer look at complex things: interactive one-page breakdowns">
   <meta property="og:title" content="lens · gramoflava">
-  <meta property="og:description" content="Interactive one-page breakdowns of complex topics">
+  <meta property="og:description" content="A closer look at complex things: interactive one-page breakdowns">
   <meta property="og:url" content="https://lens.gramoflava.xyz">
   <title>lens.gramoflava.xyz</title>
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -33,6 +33,7 @@
 
 <body>
 
+  <!-- ── Theme toggle ─────────────────────────────────────────── -->
   <div class="theme-wrap">
     <div class="segmented segmented--icon" role="group" aria-label="Color theme" data-theme-switch>
       <button class="segmented__btn" type="button" data-theme="light" aria-label="Light" title="Light" aria-pressed="false">
@@ -52,59 +53,88 @@
     </div>
   </div>
 
+  <!-- ── Hero ─────────────────────────────────────────────────── -->
   <header class="hero">
-    <div class="container">
-      <span class="tag">lens</span>
-      <h1>A closer look at complex things</h1>
-      <p class="lede">One topic per page. Interactive maps, charts and numbers, with sources and a check of the arithmetic.</p>
+    <div class="container container--narrow">
+      <div class="hero-inner">
+        <div class="hero-label">
+          <a class="tag" href="https://whois.gramoflava.xyz">gramoflava</a>
+        </div>
+        <h1 class="hero-name">lens</h1>
+        <p class="hero-tagline">A closer look at complex things. One topic per page: maps, charts and numbers, with sources and a check of the arithmetic.</p>
+        <div class="hero-chips" id="chips"></div>
+      </div>
     </div>
   </header>
 
-  <main class="container">
-    <!--
-      The list builds itself: every *.html in the repo root except index.html.
-      Each page supplies its own card through <head>:
-        <title>Name · lens</title>
-        <meta name="description" content="…">
-        <meta name="date" content="YYYY-MM-DD">
-        <meta name="keywords" content="tag, tag">
-    -->
-    <ol class="entries" id="entries" aria-live="polite">
-      <li class="state"><span class="tag">loading…</span></li>
-    </ol>
-  </main>
+  <!-- ── Pages ────────────────────────────────────────────────── -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Pages</h2>
+      </div>
+      <!--
+        The list builds itself: every *.html in the repo root except index.html.
+        Each page supplies its own card through <head>:
+          <title>Name · lens</title>
+          <meta name="description" content="…">
+          <meta name="date" content="YYYY-MM-DD">
+          <meta name="keywords" content="tag, tag">
+      -->
+      <div id="pages-grid" class="projects-grid" aria-live="polite" aria-label="Pages">
+        <div class="projects-state"><span class="tag">loading&hellip;</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ───────────────────────────────────────────────── -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-inner">
+        <a href="https://whois.gramoflava.xyz" class="footer-name footer-link">gramoflava</a>
+        <nav class="footer-links" aria-label="Source">
+          <a href="https://github.com/gramoflava/lens" class="footer-link" target="_blank" rel="noopener">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path
+                d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+            </svg>Source
+          </a>
+        </nav>
+      </div>
+    </div>
+  </footer>
 
   <script>
     (function () {
       var REPO = 'gramoflava/lens', BRANCH = 'main', CACHE = 'lens:pages:v1', TTL = 10 * 60 * 1000;
-      var list = document.getElementById('entries');
+      var grid = document.getElementById('pages-grid'), chips = document.getElementById('chips');
 
       function esc(s) {
         return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
       }
       function meta(doc, name) {
         var m = doc.querySelector('meta[name="' + name + '"]');
-        return m ? m.getAttribute('content').trim() : '';
+        return m ? (m.getAttribute('content') || '').trim() : '';
       }
       function fmtDate(iso) {
         var d = new Date(iso + 'T12:00:00');
         return isNaN(d) ? '' : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
       }
-
       function readCache() {
-        try {
-          var c = JSON.parse(sessionStorage.getItem(CACHE));
-          return c && Date.now() - c.t < TTL ? c.pages : null;
-        } catch (e) { return null; }
+        try { var c = JSON.parse(sessionStorage.getItem(CACHE)); return c && Date.now() - c.t < TTL ? c.pages : null; }
+        catch (e) { return null; }
       }
       function writeCache(pages) {
         try { sessionStorage.setItem(CACHE, JSON.stringify({ t: Date.now(), pages: pages })); } catch (e) { }
       }
 
       function listFiles() {
+        var controller = new AbortController();
+        var timer = setTimeout(function () { controller.abort(); }, 5000);
         return fetch('https://api.github.com/repos/' + REPO + '/contents/?ref=' + BRANCH, {
-          headers: { Accept: 'application/vnd.github+json' }
+          headers: { Accept: 'application/vnd.github+json' }, signal: controller.signal
         }).then(function (r) {
+          clearTimeout(timer);
           if (!r.ok) throw new Error('GitHub API ' + r.status);
           return r.json();
         }).then(function (items) {
@@ -119,10 +149,9 @@
           .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
           .then(function (html) {
             var doc = new DOMParser().parseFromString(html, 'text/html');
-            var title = (doc.title || file).replace(/\s*·\s*lens\s*$/i, '');
             return {
               file: file,
-              title: title,
+              title: (doc.title || file).replace(/\s*·\s*lens\s*$/i, ''),
               desc: meta(doc, 'description'),
               date: meta(doc, 'date'),
               tags: meta(doc, 'keywords').split(',').map(function (s) { return s.trim(); }).filter(Boolean)
@@ -133,24 +162,30 @@
 
       function render(pages) {
         if (!pages.length) {
-          list.innerHTML = '<li class="state"><span class="tag">no pages yet</span></li>';
+          grid.innerHTML = '<div class="projects-state"><span class="tag">no pages yet</span></div>';
           return;
         }
         pages.sort(function (a, b) { return (b.date || '').localeCompare(a.date || '') || a.title.localeCompare(b.title); });
-        list.innerHTML = pages.map(function (p) {
-          var date = p.date ? '<time datetime="' + esc(p.date) + '">' + esc(fmtDate(p.date)) + '</time>' : '';
-          var tags = p.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('');
-          return '<li><a class="entry solid" href="' + esc(p.file) + '">' +
-            '<span class="entry__meta">' + date + tags + '</span>' +
-            '<span class="entry__title">' + esc(p.title) + '</span>' +
-            (p.desc ? '<span class="entry__desc">' + esc(p.desc) + '</span>' : '') +
-            '</a></li>';
+
+        var all = {};
+        pages.forEach(function (p) { p.tags.forEach(function (t) { all[t] = (all[t] || 0) + 1; }); });
+        chips.innerHTML = Object.keys(all).sort().map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('');
+
+        grid.innerHTML = pages.map(function (p) {
+          return '<a class="project-card glass" href="' + esc(p.file) + '">' +
+            '<div class="project-card-head">' +
+            '<span class="project-name">' + esc(p.title) + '</span>' +
+            (p.date ? '<time class="project-date" datetime="' + esc(p.date) + '">' + esc(fmtDate(p.date)) + '</time>' : '') +
+            '</div>' +
+            '<p class="project-desc">' + (p.desc ? esc(p.desc) : '<span class="project-desc--empty">No description</span>') + '</p>' +
+            '<div class="project-tags">' + p.tags.map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; }).join('') + '</div>' +
+            '</a>';
         }).join('');
       }
 
       function fail() {
-        list.innerHTML = '<li class="state">The list did not load. ' +
-          '<a href="https://github.com/' + REPO + '">See all pages on GitHub</a>.</li>';
+        grid.innerHTML = '<div class="projects-state">The list did not load. ' +
+          '<a href="https://github.com/' + REPO + '">See all pages on GitHub</a>.</div>';
       }
 
       var cached = readCache();
@@ -161,14 +196,6 @@
         .catch(fail);
     })();
   </script>
-
-  <footer class="site-footer">
-    <div class="container">
-      <a href="https://whois.gramoflava.xyz">gramoflava</a>
-      <span>·</span>
-      <a href="https://github.com/gramoflava/lens">source</a>
-    </div>
-  </footer>
 
 </body>
 
