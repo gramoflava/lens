@@ -48,7 +48,7 @@ body {
 }
 
 .hero-name {
-  font-size: clamp(var(--text-3xl), 6vw, 56px);
+  font-size: var(--text-display);
   letter-spacing: -0.04em;
   animation: fade-up var(--dur-slow) var(--ease-out) both;
   animation-delay: 70ms;
@@ -113,7 +113,7 @@ body {
   min-width: 0;
   overflow: hidden;
   color: var(--text);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -137,7 +137,7 @@ body {
 .project-link {
   color: var(--accent);
   font-size: var(--text-sm);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .project-link:hover {
@@ -181,7 +181,7 @@ body {
 .footer-link {
   color: var(--text-secondary);
   font-size: var(--text-md);
-  font-weight: 500;
+  font-weight: var(--weight-medium);
 }
 
 .footer-links {

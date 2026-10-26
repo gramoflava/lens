@@ -8,45 +8,20 @@ GitHub Pages, no build step, no backend.
 
 ## Add a page
 
-1. Put a self-contained `name.html` in the repo root. Short lowercase name,
-   topic plus two-digit year, e.g. `oilmegashock26.html`.
-2. Give it a full document with inline CSS and JS, a link back to `./`, and
-   these head tags — the index reads its card from them:
-
+1. `name.html` in repo root: topic + two-digit year (`oilmegashock26.html`).
+2. Copy an existing story's head: no-flash snippet, favicon lines, font link, `gramofdesign/gramof.css`, `editorial.css`, own `<style>`; deferred `tools.js` + `theme.js`; `<html lang="en" data-accent="lens">`. Index card reads:
    ```html
-   <meta charset="utf-8">
    <title>Page name · lens</title>
    <meta name="description" content="One or two sentences.">
    <meta name="date" content="2026-10-02">
    <meta name="keywords" content="energy, economics">
    ```
-
-3. Name the source on the page.
-4. Commit and push. No index edit is needed.
-
-`index.html` lists every `*.html` in the repo root (except itself) through the
-GitHub contents API, then reads each page's head from the same site. Newest
-`date` first. The list is cached in the browser for 10 minutes; the API allows
-60 unauthenticated requests per hour per visitor IP.
+3. Name the source; show the arithmetic.
+4. `../gramofdesign/check.py .` → all clear. Push; the index lists root `*.html` via the GitHub contents API (newest `date` first, 10 min browser cache).
 
 ## Look
 
-The index and every page use the shared [gramof design](gramofdesign/README.md)
-with the silver `lens` accent (`data-accent="lens"` on `<html>`). A new page gets
-the family look by adding to its `<head>`:
-
-```html
-<link rel="stylesheet" href="gramofdesign/gramof.css">
-<script defer src="gramofdesign/tools.js"></script>
-<script defer src="gramofdesign/theme.js"></script>
-```
-
-plus the no-flash theme snippet and the font link from the gramof README, and
-one empty element for the top-right tools (theme · Ko-fi · whois):
-`<div class="site-tools site-tools--glass site-tools--float" data-site-tools></div>`. Colours come from tokens only
-(`--text`, `--line`, `--chart-*`), so charts and maps follow the switch. Icons
-are Tabler from `gramofdesign/icons/`, never emoji. `lens.css` is the index
-layout only.
+gramof design (slate `lens` accent) → `editorial.css` (display scale, story motion, shared furniture) → page `<style>` (story-unique only, story colours as tokens). Rules in `AGENTS.md`. `lens.css` = index layout only.
 
 ## Licence
 

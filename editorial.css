@@ -1,0 +1,99 @@
+/* lens — editorial layer on top of gramof design.
+
+   lens is an editorial magazine: one story per page, long, with maps, charts
+   and numbers that move. gramof design gives the bones (tokens, components,
+   theme). This file is the magazine on top, and the only place lens owns:
+
+     · a display scale above the family type scale (headlines, big numerals)
+     · storytelling motion, slower than UI motion on purpose
+     · the shared page furniture every story uses
+
+   Pages link it after gramof.css. Page <style> blocks hold only what is unique
+   to that story, and read tokens from here or from gramof. No raw sizes,
+   durations or colours outside the token blocks below. */
+
+:root {
+  /* Page */
+  --ed-page:    1080px;              /* story width */
+  --ed-gap:     28px;                /* between story blocks */
+
+  /* Display scale: above --text-3xl, fluid with the viewport */
+  --ed-text-title:  clamp(30px, 5.5vw, 52px);   /* the headline */
+  --ed-text-head:   clamp(17px, 2.4vw, 22px);   /* section heads */
+  --ed-text-figure: clamp(16px, 2.2vw, 22px);   /* numbers in cards */
+  --ed-text-big:    clamp(26px, 4vw, 38px);     /* one hero number per block */
+
+  /* Storytelling motion: things on the page change because the reader acted */
+  --ed-dur-reveal: 350ms;            /* markers, chips appearing */
+  --ed-dur-move:   700ms;            /* bars and flows changing size */
+  --ed-dur-long:   1100ms;           /* stacked bars re-flowing */
+  --ed-dur-loop:   900ms;            /* one cycle of a moving flow */
+  --ed-ease-pop:   cubic-bezier(.3, 1.6, .5, 1);   /* overshoot for markers */
+  --ed-ease-grow:  cubic-bezier(.3, 0, .2, 1);     /* slow settle for bars */
+
+  /* Labels on bright fixed fills (a yellow highlight) where white fails */
+  --ed-text-on-bright: #000;
+}
+
+/* ── Page furniture ──────────────────────────────────────────────────────── */
+.wrap { max-width: var(--ed-page); margin: 0 auto; padding-inline: var(--space-4); padding-block: 64px var(--space-12); display: grid; gap: var(--ed-gap); }
+.wrap > *, .panel > *, section > *, .card > * { min-width: 0; }
+.wrap h1, .wrap h2, .wrap h3 { font-family: var(--font-display); margin: 0; text-wrap: balance; letter-spacing: -.01em; }
+.wrap h1 { font-size: var(--ed-text-title); font-weight: var(--weight-semibold); letter-spacing: -.04em; line-height: 1.05; }
+.wrap h2 { font-size: var(--ed-text-head); font-weight: var(--weight-semibold); line-height: var(--leading-tight); }
+.wrap h3 { font-size: var(--text-lg); font-weight: var(--weight-semibold); }
+.wrap p { margin: 0; }
+.wrap header { display: grid; gap: var(--space-3); }
+.wrap section { display: grid; gap: var(--space-3); }
+.panel { display: grid; gap: var(--ed-gap); }
+[hidden] { display: none !important; }
+
+.mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+.muted { color: var(--text-secondary); }
+.small { font-size: var(--text-sm); color: var(--text-secondary); }
+
+/* Section head: number pill + title */
+.sh { display: flex; gap: var(--space-3); align-items: baseline; flex-wrap: wrap; }
+.sh .n { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--c, var(--accent)); border: 1px solid currentColor; border-radius: var(--radius-pill); padding: 1px var(--space-2); }
+
+/* Headline numbers under the title */
+.kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius-md); overflow: hidden; }
+.kpi { background: var(--surface); padding: var(--space-3) 12px; display: grid; gap: 2px; align-content: start; border-top: 3px solid var(--c, transparent); }
+.kpi b { font-family: var(--font-display); font-size: var(--ed-text-figure); font-weight: var(--weight-semibold); white-space: nowrap; font-variant-numeric: tabular-nums; line-height: var(--leading-tight); }
+.kpi span { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.3; }
+@media (max-width: 760px) { .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* Cards */
+.grid2 { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+@media (max-width: 820px) { .grid2 { grid-template-columns: 1fr; } }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 14px; display: grid; gap: var(--space-3); min-width: 0; align-content: start; }
+.fcard { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-md); padding: 12px 14px; display: grid; gap: var(--space-1); align-content: start; border-top: 3px solid var(--c, var(--line)); }
+.fcard .fk { font-family: var(--font-mono); font-size: var(--text-xs); letter-spacing: .08em; text-transform: uppercase; color: var(--text-secondary); }
+.fcard b { font-family: var(--font-display); font-size: var(--ed-text-figure); font-weight: var(--weight-semibold); line-height: 1.15; }
+.fcard p { font-size: var(--text-md); }
+.fcard small { font-size: var(--text-sm); color: var(--text-muted); border-left: 2px solid var(--line-strong); padding-left: var(--space-2); }
+.pts { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: var(--text-md); }
+.pts b { font-weight: var(--weight-semibold); }
+.big { font-family: var(--font-display); font-size: var(--ed-text-big); font-weight: var(--weight-semibold); letter-spacing: -.02em; line-height: 1.05; font-variant-numeric: tabular-nums; }
+
+/* Controls row */
+.ctrl { display: flex; gap: var(--space-2); align-items: center; flex-wrap: wrap; }
+
+/* Legends and chart tooltips */
+.leg, .key { display: flex; flex-wrap: wrap; gap: var(--space-1) 12px; font-size: var(--text-sm); color: var(--text-secondary); }
+.leg i { display: inline-block; width: 10px; height: 10px; border-radius: var(--radius-xs); margin-right: 5px; vertical-align: -1px; }
+.tip { position: absolute; pointer-events: none; background: var(--text); color: var(--bg); font-size: var(--text-sm); padding: 7px 9px; border-radius: var(--radius-sm); display: grid; gap: 2px; min-width: 160px; max-width: 280px; transform: translate(-50%, 0); font-family: var(--font-mono); z-index: 5; }
+.tip .d { font-weight: var(--weight-semibold); font-family: var(--font-sans); }
+
+/* Story tabs: a sticky glass segmented control */
+.tabs { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); z-index: 50; justify-self: start; max-width: 100%; overflow-x: auto; scrollbar-width: none; background: var(--glass); box-shadow: var(--shadow-md), var(--glass-edge); backdrop-filter: blur(var(--blur-bar)) saturate(1.4); -webkit-backdrop-filter: blur(var(--blur-bar)) saturate(1.4); }
+.tabs::-webkit-scrollbar { display: none; }
+.tabs .segmented__btn { padding-inline: 14px; white-space: nowrap; }
+@media (max-width: 640px) { .tabs { justify-self: stretch; } .tabs .segmented__btn { padding-inline: var(--space-3); } }
+
+/* Sources and method */
+details.acc ul { padding-left: 18px; }
+.wrap footer { font-size: var(--text-sm); color: var(--text-secondary); border-top: 1px solid var(--line); padding-top: 12px; display: grid; gap: var(--space-2); }
+.wrap footer ul { margin: 6px 0 0; padding-left: 18px; display: grid; gap: 3px; }
+
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
